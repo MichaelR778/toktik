@@ -10,7 +10,7 @@ class SupabaseStorageRepository implements StorageRepository {
     : _supabase = supabase;
 
   @override
-  Future<String> uploadImage(File imageFile, String? fileName) async {
+  Future<String> uploadImage(File imageFile, {String? fileName}) async {
     try {
       final imageFileName =
           fileName ?? '${DateTime.now().microsecondsSinceEpoch}.png';
