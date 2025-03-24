@@ -4,6 +4,7 @@ import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/auth/presentation/pages/auth_page.dart';
+import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
 import 'package:toktik/theme/app_theme.dart';
 
 class App extends StatelessWidget {
@@ -44,13 +45,7 @@ class Root extends StatefulWidget {
 class _RootState extends State<Root> {
   int _currIndex = 0;
 
-  final List<Widget> _pages = [
-    Scaffold(),
-    Scaffold(),
-    Scaffold(),
-    Scaffold(),
-    Scaffold(),
-  ];
+  // final List<Widget> _pages = [];
 
   final List<Widget> _navBarItems = [
     NavigationDestination(
@@ -83,7 +78,21 @@ class _RootState extends State<Root> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _currIndex, children: _pages),
+      body: IndexedStack(
+        index: _currIndex,
+        children: [
+          Scaffold(),
+          Scaffold(),
+          Scaffold(),
+          Scaffold(),
+          BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              final userId = (state as Authenticated).user.id;
+              return ProfilePage(userId: userId);
+            },
+          ),
+        ],
+      ),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
@@ -100,6 +109,9 @@ class _RootState extends State<Root> {
           },
           destinations: _navBarItems,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.read<AuthCubit>().logout(),
       ),
     );
   }

@@ -15,12 +15,14 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     _confirmController.dispose();
     super.dispose();
@@ -38,6 +40,14 @@ class _RegisterPageState extends State<RegisterPage> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(hintText: 'Email'),
+            ),
+
+            const SizedBox(height: 10),
+
+            // username
+            TextField(
+              controller: _usernameController,
+              decoration: InputDecoration(hintText: 'Username'),
             ),
 
             const SizedBox(height: 10),
@@ -66,6 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
               onTap: () {
                 context.read<AuthCubit>().register(
                   _emailController.text,
+                  _usernameController.text,
                   _passwordController.text,
                   _confirmController.text,
                 );

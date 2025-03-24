@@ -48,12 +48,13 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> register(
     String email,
+    String username,
     String password,
     String confirmPassword,
   ) async {
     try {
       emit(AuthLoading());
-      await _registerUsecase(email, password, confirmPassword);
+      await _registerUsecase(email, username, password, confirmPassword);
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }

@@ -6,11 +6,17 @@ class Register {
   Register({required AuthRepository authRepository})
     : _authRepository = authRepository;
 
-  Future<void> call(String email, String password, String confirmPassword) {
+  Future<void> call(
+    String email,
+    String username,
+    String password,
+    String confirmPassword,
+  ) {
     if (email.isEmpty) throw 'Email can\'t be empty';
+    if (username.isEmpty) throw 'Username can\'t be empty';
     if (password.isEmpty) throw 'Password can\'t be empty';
     if (confirmPassword.isEmpty) throw 'Confirm password can\'t be empty';
     if (password != confirmPassword) throw 'Password does not match';
-    return _authRepository.register(email, password);
+    return _authRepository.register(email, password, username);
   }
 }

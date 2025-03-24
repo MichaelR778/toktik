@@ -28,9 +28,13 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> register(String email, String password) async {
+  Future<void> register(String email, String password, String username) async {
     try {
-      await _supabase.auth.signUp(email: email, password: password);
+      await _supabase.auth.signUp(
+        email: email,
+        password: password,
+        data: {'username': username},
+      );
     } catch (e) {
       throw 'Register failed: ${e.toString()}';
     }
