@@ -25,8 +25,24 @@ class SupabaseProfileRepository implements ProfileRepository {
     String userId,
     String? newUsername,
     String? newProfileImageUrl,
-  ) {
-    // TODO: implement updateProfile
-    throw UnimplementedError();
+  ) async {
+    try {
+      final Map<String, dynamic> data = {};
+
+      if (newUsername != null) {
+        data['username'] = newUsername;
+      }
+      if (newProfileImageUrl != null) {
+        data['pfp_url'] = newProfileImageUrl;
+      }
+
+      if (data.isEmpty) {
+        return;
+      }
+
+      await _supabase.from('users').update(data).eq('id', userId);
+    } catch (e) {
+      throw 'Failed to update profile: ${e.toString()}';
+    }
   }
 }

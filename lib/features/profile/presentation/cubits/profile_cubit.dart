@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toktik/features/profile/domain/entities/user_profile.dart';
 import 'package:toktik/features/profile/domain/usecases/get_profile.dart';
 import 'package:toktik/features/profile/domain/usecases/update_profile.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_state.dart';
@@ -23,4 +26,10 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ProfileError(message: e.toString()));
     }
   }
+
+  Future<void> updateProfile(
+    UserProfile oldProfile,
+    String newUsername,
+    File? newProfileImage,
+  ) => _updateProfileUsecase(oldProfile, newUsername, newProfileImage);
 }

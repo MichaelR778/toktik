@@ -12,6 +12,8 @@ import 'package:toktik/features/profile/domain/repositories/profile_repository.d
 import 'package:toktik/features/profile/domain/usecases/get_profile.dart';
 import 'package:toktik/features/profile/domain/usecases/update_profile.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:toktik/features/storage/data/repositories/supabase_storage_repository.dart';
+import 'package:toktik/features/storage/domain/repositories/storage_repository.dart';
 
 final getIt = GetIt.instance;
 
@@ -38,7 +40,9 @@ void initDependencies() {
   getIt.registerLazySingleton(() => Register(authRepository: getIt()));
   getIt.registerLazySingleton(() => Logout(authRepository: getIt()));
   getIt.registerLazySingleton(() => GetProfile(profileRepository: getIt()));
-  getIt.registerLazySingleton(() => UpdateProfile(profileRepository: getIt()));
+  getIt.registerLazySingleton(
+    () => UpdateProfile(profileRepository: getIt(), storageRepository: getIt()),
+  );
 
   // repository
   getIt.registerLazySingleton<AuthRepository>(
@@ -46,6 +50,9 @@ void initDependencies() {
   );
   getIt.registerLazySingleton<ProfileRepository>(
     () => SupabaseProfileRepository(supabase: getIt()),
+  );
+  getIt.registerLazySingleton<StorageRepository>(
+    () => SupabaseStorageRepository(supabase: getIt()),
   );
 
   // external package etc

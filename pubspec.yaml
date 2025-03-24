@@ -12,6 +12,8 @@ dependencies:
   flutter_bloc: ^9.1.0
   flutter_dotenv: ^5.2.1
   get_it: ^8.0.3
+  image_cropper: ^9.0.0
+  image_picker: ^1.1.2
   supabase_flutter: ^2.8.4
 
 dev_dependencies:

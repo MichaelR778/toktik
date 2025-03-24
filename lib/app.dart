@@ -5,7 +5,7 @@ import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/auth/presentation/pages/auth_page.dart';
 import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
-import 'package:toktik/theme/app_theme.dart';
+import 'package:toktik/core/theme/app_theme.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
