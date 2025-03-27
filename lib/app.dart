@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toktik/core/utils/file_util.dart';
 import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/auth/presentation/pages/auth_page.dart';
+import 'package:toktik/features/post/presentation/cubits/post_cubit.dart';
 import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
 import 'package:toktik/core/theme/app_theme.dart';
 
@@ -16,6 +16,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()..checkAuthState()),
+        BlocProvider(create: (context) => getIt<PostCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -100,7 +101,9 @@ class _RootState extends State<Root> {
           selectedIndex: _currIndex,
           onDestinationSelected: (index) {
             if (index == 2) {
-              pickVideo();
+              final userId =
+                  (context.read<AuthCubit>().state as Authenticated).user.id;
+              context.read<PostCubit>().createPost(userId);
             } else {
               setState(() {
                 _currIndex = index;
