@@ -14,7 +14,13 @@ class SupabaseStorageRepository implements StorageRepository {
     try {
       final imageFileName =
           fileName ?? '${DateTime.now().microsecondsSinceEpoch}.png';
-      await _supabase.storage.from('images').upload(imageFileName, imageFile);
+      await _supabase.storage
+          .from('images')
+          .upload(
+            imageFileName,
+            imageFile,
+            fileOptions: FileOptions(upsert: true),
+          );
       return _supabase.storage.from('images').getPublicUrl(imageFileName);
     } catch (e) {
       throw 'Failed to upload image: ${e.toString()}';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toktik/core/utils/file_util.dart';
 import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
@@ -85,11 +86,8 @@ class _RootState extends State<Root> {
           Scaffold(),
           Scaffold(),
           Scaffold(),
-          BlocBuilder<AuthCubit, AuthState>(
-            builder: (context, state) {
-              final userId = (state as Authenticated).user.id;
-              return ProfilePage(userId: userId);
-            },
+          ProfilePage(
+            userId: (context.read<AuthCubit>().state as Authenticated).user.id,
           ),
         ],
       ),
@@ -101,7 +99,9 @@ class _RootState extends State<Root> {
         child: NavigationBar(
           selectedIndex: _currIndex,
           onDestinationSelected: (index) {
-            if (index != 2) {
+            if (index == 2) {
+              pickVideo();
+            } else {
               setState(() {
                 _currIndex = index;
               });

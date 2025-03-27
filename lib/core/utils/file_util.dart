@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,4 +21,14 @@ Future<File?> pickImage() async {
   if (cropped == null) return null;
 
   return File(cropped.path);
+}
+
+Future<File?> pickVideo() async {
+  final res = await FilePicker.platform.pickFiles(type: FileType.video);
+  if (res == null) return null;
+
+  final path = res.files.first.path;
+  if (path == null) return null;
+
+  return File(path);
 }
