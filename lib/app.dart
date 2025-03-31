@@ -4,6 +4,8 @@ import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/auth/presentation/pages/auth_page.dart';
+import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
+import 'package:toktik/features/feed/presentation/pages/feed_page.dart';
 import 'package:toktik/features/post/presentation/cubits/post_cubit.dart';
 import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
 import 'package:toktik/core/theme/app_theme.dart';
@@ -17,6 +19,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()..checkAuthState()),
         BlocProvider(create: (context) => getIt<PostCubit>()),
+        BlocProvider(create: (context) => getIt<FeedCubit>()..fetchPosts()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -83,20 +86,24 @@ class _RootState extends State<Root> {
       body: IndexedStack(
         index: _currIndex,
         children: [
-          Scaffold(),
+          FeedPage(),
           Scaffold(),
           Scaffold(),
           Scaffold(),
           ProfilePage(
             userId: (context.read<AuthCubit>().state as Authenticated).user.id,
+            home: true,
           ),
         ],
       ),
       bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
+        borderRadius:
+            (_currIndex == 0)
+                ? BorderRadius.zero
+                : BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
         child: NavigationBar(
           selectedIndex: _currIndex,
           onDestinationSelected: (index) {
@@ -112,9 +119,6 @@ class _RootState extends State<Root> {
           },
           destinations: _navBarItems,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<AuthCubit>().logout(),
       ),
     );
   }

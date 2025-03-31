@@ -16,6 +16,7 @@ dependencies:
   image_cropper: ^9.0.0
   image_picker: ^1.1.2
   supabase_flutter: ^2.8.4
+  video_player: ^2.9.5
 
 dev_dependencies:
   flutter_test:

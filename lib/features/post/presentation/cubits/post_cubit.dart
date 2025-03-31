@@ -7,7 +7,7 @@ class PostCubit extends Cubit<PostState> {
 
   PostCubit({required CreatePost createPostUsecase})
     : _createPostUsecase = createPostUsecase,
-      super(PostLoading());
+      super(PostInitial());
 
   Future<void> createPost(String userId) async {
     try {

@@ -21,20 +21,31 @@ class SupabasePostRepository implements PostRepository {
   }
 
   @override
-  Future<List<Post>> fetchPosts() {
-    // TODO: implement fetchPosts
-    throw UnimplementedError();
+  Future<List<Post>> fetchPosts() async {
+    try {
+      final res = await _supabase.from('posts').select();
+      return res.map((json) => PostModel.fromJson(json)).toList();
+    } catch (e) {
+      throw 'Failed to fetch posts: ${e.toString()}';
+    }
   }
 
   @override
-  Future<List<Post>> fetchUserPosts(String userId) {
-    // TODO: implement fetchUserPosts
-    throw UnimplementedError();
+  Future<List<Post>> fetchUserPosts(String userId) async {
+    try {
+      final res = await _supabase.from('posts').select().eq('user_id', userId);
+      return res.map((json) => PostModel.fromJson(json)).toList();
+    } catch (e) {
+      throw 'Failed to fetch user posts: ${e.toString()}';
+    }
   }
 
   @override
-  Future<void> deletePost(String postId) {
-    // TODO: implement deletePost
-    throw UnimplementedError();
+  Future<void> deletePost(String postId) async {
+    try {
+      await _supabase.from('posts').delete().eq('id', postId);
+    } catch (e) {
+      throw 'Failed to delete post: ${e.toString()}';
+    }
   }
 }

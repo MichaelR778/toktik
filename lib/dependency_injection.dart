@@ -7,9 +7,12 @@ import 'package:toktik/features/auth/domain/usecases/login.dart';
 import 'package:toktik/features/auth/domain/usecases/logout.dart';
 import 'package:toktik/features/auth/domain/usecases/register.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/post/data/repositories/supabase_post_repository.dart';
 import 'package:toktik/features/post/domain/repositories/post_repository.dart';
 import 'package:toktik/features/post/domain/usecases/create_post.dart';
+import 'package:toktik/features/post/domain/usecases/fetch_posts.dart';
+import 'package:toktik/features/post/domain/usecases/fetch_user_posts.dart';
 import 'package:toktik/features/post/presentation/cubits/post_cubit.dart';
 import 'package:toktik/features/profile/data/repositories/supabase_profile_repository.dart';
 import 'package:toktik/features/profile/domain/repositories/profile_repository.dart';
@@ -36,6 +39,7 @@ void initDependencies() {
         ProfileCubit(getProfileUsecase: getIt(), updateProfileUsecase: getIt()),
   );
   getIt.registerLazySingleton(() => PostCubit(createPostUsecase: getIt()));
+  getIt.registerLazySingleton(() => FeedCubit(fetchPostsUsecase: getIt()));
 
   // usecase
   getIt.registerLazySingleton(
@@ -51,6 +55,8 @@ void initDependencies() {
   getIt.registerLazySingleton(
     () => CreatePost(postRepository: getIt(), storageRepository: getIt()),
   );
+  getIt.registerLazySingleton(() => FetchPosts(postRepository: getIt()));
+  getIt.registerLazySingleton(() => FetchUserPosts(postRepository: getIt()));
 
   // repository
   getIt.registerLazySingleton<AuthRepository>(

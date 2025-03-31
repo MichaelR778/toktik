@@ -20,5 +20,6 @@ class AppTheme {
       indicatorColor: Colors.white,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
     ),
+    appBarTheme: AppBarTheme(centerTitle: false),
   );
 }

@@ -1,14 +1,10 @@
-import 'package:toktik/features/post/domain/entities/post.dart';
-
 abstract class PostState {}
 
-class PostLoading extends PostState {}
+class PostInitial extends PostState {}
 
-class PostLoaded extends PostState {
-  final List<Post> posts;
+class PostUploading extends PostState {}
 
-  PostLoaded({required this.posts});
-}
+class PostUploaded extends PostState {}
 
 class PostError extends PostState {
   final String message;
