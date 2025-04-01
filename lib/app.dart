@@ -69,8 +69,8 @@ class _RootState extends State<Root> {
       label: 'Post',
     ),
     NavigationDestination(
-      icon: Icon(Icons.message, color: Colors.grey),
-      selectedIcon: Icon(Icons.message),
+      icon: Icon(Icons.mail, color: Colors.grey),
+      selectedIcon: Icon(Icons.mail),
       label: 'Message',
     ),
     NavigationDestination(

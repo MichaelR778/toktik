@@ -5,14 +5,20 @@ import 'package:flutter/material.dart';
 class ProfileImage extends StatelessWidget {
   final File? imageFile;
   final String imageUrl;
+  final double radius;
   static const double profileImageWidth = 90;
 
-  const ProfileImage({super.key, this.imageFile, required this.imageUrl});
+  const ProfileImage({
+    super.key,
+    this.imageFile,
+    required this.imageUrl,
+    this.radius = profileImageWidth,
+  });
 
   Widget _placeHolder(context) {
     return Container(
-      width: profileImageWidth,
-      height: profileImageWidth,
+      width: radius,
+      height: radius,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
         shape: BoxShape.circle,
@@ -29,16 +35,16 @@ class ProfileImage extends StatelessWidget {
           imageFile != null
               ? Image.file(
                 imageFile!,
-                width: profileImageWidth,
-                height: profileImageWidth,
+                width: radius,
+                height: radius,
                 fit: BoxFit.cover,
                 errorBuilder:
                     (context, error, stackTrace) => _placeHolder(context),
               )
               : Image.network(
                 imageUrl,
-                width: profileImageWidth,
-                height: profileImageWidth,
+                width: radius,
+                height: radius,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {

@@ -19,11 +19,12 @@ class FeedPage extends StatelessWidget {
           // loaded
           else if (state is FeedLoaded) {
             final posts = state.posts;
+            final profiles = state.profiles;
             return PageView.builder(
               scrollDirection: Axis.vertical,
               itemCount: posts.length,
               itemBuilder: (context, index) {
-                return PostPage(post: posts[index]);
+                return PostPage(post: posts[index], profile: profiles[index]);
               },
             );
           }

@@ -21,5 +21,8 @@ class AppTheme {
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
     ),
     appBarTheme: AppBarTheme(centerTitle: false),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(iconColor: WidgetStatePropertyAll(Colors.white)),
+    ),
   );
 }

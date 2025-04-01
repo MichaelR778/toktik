@@ -5,6 +5,7 @@ class PostModel extends Post {
     required super.id,
     required super.userId,
     required super.videoUrl,
+    required super.likes,
   });
 
   factory PostModel.fromEntity(Post entity) {
@@ -12,6 +13,7 @@ class PostModel extends Post {
       id: entity.id,
       userId: entity.userId,
       videoUrl: entity.videoUrl,
+      likes: entity.likes,
     );
   }
 
@@ -20,10 +22,11 @@ class PostModel extends Post {
       id: json['id'],
       userId: json['user_id'],
       videoUrl: json['video_url'],
+      likes: (json['likes'] as List<dynamic>).map((e) => e as String).toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'user_id': userId, 'video_url': videoUrl};
+    return {'user_id': userId, 'video_url': videoUrl, 'likes': likes};
   }
 }
