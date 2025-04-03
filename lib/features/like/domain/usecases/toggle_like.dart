@@ -9,9 +9,9 @@ class ToggleLike {
   Future<void> call(String userId, int postId) async {
     final isLiked = await _likeRepository.isLiked(userId, postId);
     if (isLiked) {
-      await _likeRepository.unlikePost(postId);
+      await _likeRepository.unlikePost(userId, postId);
     } else {
-      await _likeRepository.likePost(postId);
+      await _likeRepository.likePost(userId, postId);
     }
   }
 }

@@ -8,6 +8,8 @@ import 'package:toktik/features/auth/domain/usecases/logout.dart';
 import 'package:toktik/features/auth/domain/usecases/register.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
+import 'package:toktik/features/like/data/repositories/supabase_like_repositories.dart';
+import 'package:toktik/features/like/domain/repositories/like_repository.dart';
 import 'package:toktik/features/like/domain/usecases/toggle_like.dart';
 import 'package:toktik/features/like/presentation/cubits/like_cubit.dart';
 import 'package:toktik/features/post/data/repositories/supabase_post_repository.dart';
@@ -21,6 +23,7 @@ import 'package:toktik/features/profile/domain/repositories/profile_repository.d
 import 'package:toktik/features/profile/domain/usecases/get_profile.dart';
 import 'package:toktik/features/profile/domain/usecases/update_profile.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:toktik/features/profile/presentation/cubits/profile_posts_cubit.dart';
 import 'package:toktik/features/storage/data/repositories/supabase_storage_repository.dart';
 import 'package:toktik/features/storage/domain/repositories/storage_repository.dart';
 
@@ -44,7 +47,10 @@ void initDependencies() {
   getIt.registerLazySingleton(
     () => FeedCubit(fetchPostsUsecase: getIt(), getProfileUsecase: getIt()),
   );
-  getIt.registerLazySingleton(() => LikeCubit(toggleLikeUsecase: getIt()));
+  getIt.registerFactory(() => LikeCubit(toggleLikeUsecase: getIt()));
+  getIt.registerFactory(
+    () => ProfilePostsCubit(fetchUserPostsUsecase: getIt()),
+  );
 
   // usecase
   getIt.registerLazySingleton(
@@ -77,7 +83,9 @@ void initDependencies() {
   getIt.registerLazySingleton<PostRepository>(
     () => SupabasePostRepository(supabase: getIt()),
   );
-  // supabaselikerepo
+  getIt.registerLazySingleton<LikeRepository>(
+    () => SupabaseLikeRepositories(supabase: getIt()),
+  );
 
   // external package etc
   getIt.registerLazySingleton(() => Supabase.instance.client);

@@ -20,9 +20,6 @@ class AppTheme {
       indicatorColor: Colors.white,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
     ),
-    appBarTheme: AppBarTheme(centerTitle: false),
-    iconButtonTheme: IconButtonThemeData(
-      style: ButtonStyle(iconColor: WidgetStatePropertyAll(Colors.white)),
-    ),
+    appBarTheme: AppBarTheme(centerTitle: false, color: Colors.transparent),
   );
 }

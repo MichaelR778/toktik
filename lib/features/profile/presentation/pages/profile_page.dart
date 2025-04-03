@@ -9,6 +9,7 @@ import 'package:toktik/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_state.dart';
 import 'package:toktik/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:toktik/features/profile/presentation/widgets/profile_image.dart';
+import 'package:toktik/features/profile/presentation/widgets/profile_posts.dart';
 
 class ProfilePage extends StatelessWidget {
   final String userId;
@@ -31,7 +32,10 @@ class ProfilePage extends StatelessWidget {
           child: ListTile(
             leading: Icon(Icons.logout),
             title: const Text('Logout'),
-            onTap: () => context.read<AuthCubit>().logout(),
+            onTap: () {
+              Navigator.pop(context);
+              context.read<AuthCubit>().logout();
+            },
           ),
         );
       },
@@ -93,58 +97,63 @@ class _ProfileLoadedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => context.read<ProfileCubit>().loadProfile(profile.userId),
-      child: SingleChildScrollView(
-        physics:
-            AlwaysScrollableScrollPhysics(), // might remove later after fully implementing profle page
-        child: Column(
-          children: [
-            // profile picture
-            ProfileImage(imageUrl: profile.profileImageUrl),
+      child: ListView(
+        children: [
+          Column(
+            children: [
+              // profile picture
+              ProfileImage(imageUrl: profile.profileImageUrl),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-            // username
-            Text(profile.username),
+              // username
+              Text(profile.username),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-            // following, followers, likes
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Column(children: [Text('0'), Text('Following')]),
-                ),
-                SizedBox(
-                  width: 100,
-                  child: Column(children: [Text('0'), Text('Followers')]),
-                ),
-                SizedBox(
-                  width: 100,
-                  child: Column(children: [Text('0'), Text('Likes')]),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-
-            // edit profile button
-            if (selfProfile)
-              MyFilledTextButton(
-                text: 'Edit Profile',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => EditProfilePage(userId: profile.userId),
-                    ),
-                  );
-                },
+              // following, followers, likes
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: Column(children: [Text('0'), Text('Following')]),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: Column(children: [Text('0'), Text('Followers')]),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: Column(children: [Text('0'), Text('Likes')]),
+                  ),
+                ],
               ),
-          ],
-        ),
+
+              const SizedBox(height: 20),
+
+              // edit profile button
+              selfProfile
+                  ? MyFilledTextButton(
+                    text: 'Edit Profile',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  EditProfilePage(userId: profile.userId),
+                        ),
+                      );
+                    },
+                  )
+                  : MyFilledTextButton(text: 'Follow', onTap: () {}),
+
+              const SizedBox(height: 20),
+            ],
+          ),
+          ProfilePosts(profile: profile),
+        ],
       ),
     );
   }

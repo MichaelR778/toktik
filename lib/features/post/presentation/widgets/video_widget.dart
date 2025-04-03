@@ -33,18 +33,41 @@ class _VideoWidgetState extends State<VideoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      color: Colors.black,
-      child: Center(
-        child:
-            _controller.value.isInitialized
-                ? AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                )
-                : CircularProgressIndicator(),
+    return GestureDetector(
+      onTap: () {
+        if (!_controller.value.isPlaying) {
+          _controller.play();
+        } else {
+          _controller.pause();
+        }
+        setState(() {});
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: Colors.black,
+        child: Stack(
+          children: [
+            Center(
+              child:
+                  _controller.value.isInitialized
+                      ? AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      )
+                      : CircularProgressIndicator(),
+            ),
+            Center(
+              child: Icon(
+                Icons.play_arrow,
+                size: 80,
+                color: Colors.white.withAlpha(
+                  _controller.value.isPlaying ? 0 : 200,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -15,7 +15,7 @@ class LikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final currUser = (context.read<AuthCubit>().state as Authenticated).user;
     return BlocProvider(
-      create: (context) => getIt<LikeCubit>(),
+      create: (context) => getIt<LikeCubit>()..init(post, currUser),
       child: BlocBuilder<LikeCubit, bool>(
         builder: (context, isLiked) {
           return IconButton(

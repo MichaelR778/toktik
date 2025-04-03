@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:toktik/features/auth/domain/entities/user_entity.dart';
 import 'package:toktik/features/like/domain/usecases/toggle_like.dart';
 import 'package:toktik/features/post/domain/entities/post.dart';
 
@@ -11,7 +11,7 @@ class LikeCubit extends Cubit<bool> {
       super(false);
   bool _inProcess = false;
 
-  void init(Post post, User currentUser) {
+  void init(Post post, UserEntity currentUser) {
     final liked = post.likes.contains(currentUser.id);
     emit(liked);
   }
@@ -28,6 +28,7 @@ class LikeCubit extends Cubit<bool> {
     } catch (e) {
       // revert update
       emit(!state);
+      print(e.toString());
     } finally {
       _inProcess = false;
     }

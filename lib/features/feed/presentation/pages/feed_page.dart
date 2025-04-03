@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_state.dart';
-import 'package:toktik/features/post/presentation/pages/post_page.dart';
+import 'package:toktik/features/post/presentation/widgets/post_view.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -20,13 +20,7 @@ class FeedPage extends StatelessWidget {
           else if (state is FeedLoaded) {
             final posts = state.posts;
             final profiles = state.profiles;
-            return PageView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                return PostPage(post: posts[index], profile: profiles[index]);
-              },
-            );
+            return PostView(posts: posts, profiles: profiles);
           }
           // error
           else if (state is FeedError) {

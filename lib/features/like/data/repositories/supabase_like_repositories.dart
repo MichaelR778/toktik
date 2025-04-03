@@ -8,20 +8,50 @@ class SupabaseLikeRepositories implements LikeRepository {
     : _supabase = supabase;
 
   @override
-  Future<void> likePost(int postId) {
-    // TODO: implement likePost
-    throw UnimplementedError();
+  Future<void> likePost(String userId, int postId) async {
+    try {
+      final likes = await fetchLikes(postId);
+      likes.add(userId);
+      await _supabase.from('posts').update({'likes': likes}).eq('id', postId);
+    } catch (e) {
+      throw 'Failed to like post: $e';
+    }
   }
 
   @override
-  Future<void> unlikePost(int postId) {
-    // TODO: implement unlikePost
-    throw UnimplementedError();
+  Future<void> unlikePost(String userId, int postId) async {
+    try {
+      final likes = await fetchLikes(postId);
+      likes.remove(userId);
+      await _supabase.from('posts').update({'likes': likes}).eq('id', postId);
+    } catch (e) {
+      throw 'Failed to unlike post: $e';
+    }
   }
 
   @override
-  Future<bool> isLiked(String userId, int postId) {
-    // TODO: implement isLiked
-    throw UnimplementedError();
+  Future<bool> isLiked(String userId, int postId) async {
+    try {
+      final likes = await fetchLikes(postId);
+      return likes.contains(userId);
+    } catch (e) {
+      throw 'Failed to check like state: $e';
+    }
+  }
+
+  Future<List<String>> fetchLikes(int postId) async {
+    try {
+      final res =
+          await _supabase
+              .from('posts')
+              .select('likes')
+              .eq('id', postId)
+              .single();
+      return (res['likes'] as List<dynamic>)
+          .map((userId) => userId as String)
+          .toList();
+    } catch (e) {
+      throw 'Failed to fetch post like: $e';
+    }
   }
 }
