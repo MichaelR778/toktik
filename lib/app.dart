@@ -6,6 +6,7 @@ import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/auth/presentation/pages/auth_page.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/feed/presentation/pages/feed_page.dart';
+import 'package:toktik/features/like/presentation/cubits/like_cubit.dart';
 import 'package:toktik/features/post/presentation/cubits/post_cubit.dart';
 import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
 import 'package:toktik/core/theme/app_theme.dart';
@@ -20,6 +21,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AuthCubit>()..checkAuthState()),
         BlocProvider(create: (context) => getIt<PostCubit>()),
         BlocProvider(create: (context) => getIt<FeedCubit>()..fetchPosts()),
+        BlocProvider(create: (context) => getIt<LikeCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

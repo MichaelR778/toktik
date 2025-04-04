@@ -47,7 +47,7 @@ void initDependencies() {
   getIt.registerLazySingleton(
     () => FeedCubit(fetchPostsUsecase: getIt(), getProfileUsecase: getIt()),
   );
-  getIt.registerFactory(() => LikeCubit(toggleLikeUsecase: getIt()));
+  getIt.registerLazySingleton(() => LikeCubit(toggleLikeUsecase: getIt()));
   getIt.registerFactory(
     () => ProfilePostsCubit(fetchUserPostsUsecase: getIt()),
   );

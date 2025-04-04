@@ -1,19 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toktik/features/auth/domain/entities/user_entity.dart';
 import 'package:toktik/features/like/domain/usecases/toggle_like.dart';
+import 'package:toktik/features/like/presentation/cubits/like_state.dart';
 import 'package:toktik/features/post/domain/entities/post.dart';
 
-class LikeCubit extends Cubit<bool> {
+// edited
+class LikeCubit extends Cubit<LikeState> {
   final ToggleLike _toggleLikeUsecase;
 
   LikeCubit({required ToggleLike toggleLikeUsecase})
     : _toggleLikeUsecase = toggleLikeUsecase,
-      super(false);
+      super(LikeState(likedVideos: {}, initialLikeCounts: {}));
   bool _inProcess = false;
 
-  void init(Post post, UserEntity currentUser) {
-    final liked = post.likes.contains(currentUser.id);
-    emit(liked);
+  void track(String userId, Post post) {
+    final likesMap = Map<int, bool>.from(state.likedVideos);
+    final countsMap = Map<int, int>.from(state.initialLikeCounts);
+
+    likesMap[post.id] = post.likes.contains(userId);
+    countsMap[post.id] = post.likes.length;
+
+    emit(state.copyWith(likedVideos: likesMap, initialLikeCounts: countsMap));
   }
 
   Future<void> toggleLike(String userId, int postId) async {
@@ -21,14 +27,16 @@ class LikeCubit extends Cubit<bool> {
     _inProcess = true;
 
     // positive update
-    emit(!state);
+    final currentLikes = Map<int, bool>.from(state.likedVideos);
+    currentLikes[postId] = !(currentLikes[postId] ?? false);
+    emit(state.copyWith(likedVideos: currentLikes));
 
     try {
       await _toggleLikeUsecase(userId, postId);
     } catch (e) {
       // revert update
-      emit(!state);
-      print(e.toString());
+      currentLikes[postId] = !(currentLikes[postId] ?? false);
+      emit(state.copyWith(likedVideos: currentLikes));
     } finally {
       _inProcess = false;
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toktik/features/like/presentation/widgets/like_button.dart';
 import 'package:toktik/features/post/domain/entities/post.dart';
+import 'package:toktik/features/post/presentation/widgets/post_button.dart';
 import 'package:toktik/features/post/presentation/widgets/video_widget.dart';
 import 'package:toktik/features/profile/domain/entities/user_profile.dart';
 import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
@@ -62,18 +63,25 @@ class PostPage extends StatelessWidget {
                         radius: 50,
                       ),
                     ),
+                    const SizedBox(height: 5),
                     LikeButton(post: post),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.chat, color: Colors.white),
+                    PostButton(
+                      onTap: () {},
+                      icon: Icons.chat,
+                      color: Colors.white,
+                      count: 0,
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.bookmark, color: Colors.white),
+                    PostButton(
+                      onTap: () {},
+                      icon: Icons.bookmark,
+                      color: Colors.white,
+                      count: 0,
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_outward, color: Colors.white),
+                    PostButton(
+                      onTap: () {},
+                      icon: Icons.arrow_outward,
+                      color: Colors.white,
+                      count: 0,
                     ),
                   ],
                 ),
