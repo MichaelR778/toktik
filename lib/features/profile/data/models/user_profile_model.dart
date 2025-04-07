@@ -9,6 +9,7 @@ class UserProfileModel extends UserProfile {
     required super.following,
   });
 
+  // TODO: modify followers and following using junction table instead
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
       userId: json['id'],

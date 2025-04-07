@@ -16,6 +16,21 @@ class FeedCubit extends Cubit<FeedState> {
        _getProfileUsecase = getProfileUsecase,
        super(FeedLoading());
 
+  Future<void> init() async {
+    emit(FeedLoading());
+    try {
+      final posts = await _fetchPostsUsecase();
+      final List<UserProfile> profiles = [];
+      for (final post in posts) {
+        final profile = await _getProfileUsecase(post.userId);
+        profiles.add(profile);
+      }
+      emit(FeedLoaded(posts: posts, profiles: profiles));
+    } catch (e) {
+      emit(FeedError(message: e.toString()));
+    }
+  }
+
   Future<void> fetchPosts() async {
     try {
       List<Post> posts = [];

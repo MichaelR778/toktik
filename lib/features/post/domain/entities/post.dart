@@ -2,7 +2,7 @@ class Post {
   final int id;
   final String userId;
   final String videoUrl;
-  final List<String> likes;
+  final int likes;
 
   Post({
     required this.id,
@@ -10,4 +10,8 @@ class Post {
     required this.videoUrl,
     required this.likes,
   });
+
+  Post copyWith(int newLikes) {
+    return Post(id: id, userId: userId, videoUrl: videoUrl, likes: newLikes);
+  }
 }

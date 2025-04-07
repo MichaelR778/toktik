@@ -113,14 +113,20 @@ class __ProfileLoadedWidgetState extends State<_ProfileLoadedWidget> {
           // save button
           MyFilledTextButton(
             text: 'Save',
-            onTap: () {
-              context.read<ProfileCubit>().updateProfile(
-                profile,
-                _controller.text,
-                newProfileImage,
-              );
-              if (mounted) {
-                Navigator.pop(context);
+            onTap: () async {
+              try {
+                await context.read<ProfileCubit>().updateProfile(
+                  profile,
+                  _controller.text,
+                  newProfileImage,
+                );
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(e.toString())));
               }
             },
           ),

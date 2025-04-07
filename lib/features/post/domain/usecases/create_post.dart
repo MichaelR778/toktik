@@ -18,7 +18,7 @@ class CreatePost {
     if (videoFile == null) return;
 
     final videoUrl = await _storageRepository.uploadVideo(videoFile);
-    final newPost = Post(id: -1, userId: userId, videoUrl: videoUrl, likes: []);
+    final newPost = Post(id: -1, userId: userId, videoUrl: videoUrl, likes: 0);
     await _postRepository.createPost(newPost);
   }
 }

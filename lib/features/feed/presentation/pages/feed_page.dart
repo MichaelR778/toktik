@@ -4,6 +4,7 @@ import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_state.dart';
 import 'package:toktik/features/post/presentation/widgets/post_view.dart';
 
+// TODO: implement doomscroll
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
 
@@ -20,7 +21,10 @@ class FeedPage extends StatelessWidget {
           else if (state is FeedLoaded) {
             final posts = state.posts;
             final profiles = state.profiles;
-            return PostView(posts: posts, profiles: profiles);
+            return RefreshIndicator(
+              onRefresh: () => context.read<FeedCubit>().init(),
+              child: PostView(posts: posts, profiles: profiles),
+            );
           }
           // error
           else if (state is FeedError) {

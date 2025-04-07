@@ -31,5 +31,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     UserProfile oldProfile,
     String newUsername,
     File? newProfileImage,
-  ) => _updateProfileUsecase(oldProfile, newUsername, newProfileImage);
+  ) async {
+    await _updateProfileUsecase(oldProfile, newUsername, newProfileImage);
+  }
 }

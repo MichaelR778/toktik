@@ -22,11 +22,12 @@ class PostModel extends Post {
       id: json['id'],
       userId: json['user_id'],
       videoUrl: json['video_url'],
-      likes: (json['likes'] as List<dynamic>).map((e) => e as String).toList(),
+      // we'll fetch like count in the usecase
+      likes: 0,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'user_id': userId, 'video_url': videoUrl, 'likes': likes};
+    return {'user_id': userId, 'video_url': videoUrl};
   }
 }

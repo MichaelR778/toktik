@@ -20,7 +20,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()..checkAuthState()),
         BlocProvider(create: (context) => getIt<PostCubit>()),
-        BlocProvider(create: (context) => getIt<FeedCubit>()..fetchPosts()),
+        BlocProvider(create: (context) => getIt<FeedCubit>()..init()),
         BlocProvider(create: (context) => getIt<LikeCubit>()),
       ],
       child: MaterialApp(
