@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:toktik/features/post/domain/entities/post.dart';
+import 'package:toktik/features/post/domain/entities/ui_post.dart';
 import 'package:toktik/features/post/presentation/widgets/post_view.dart';
-import 'package:toktik/features/profile/domain/entities/user_profile.dart';
 import 'package:video_player/video_player.dart';
 
 class PostCard extends StatefulWidget {
   final String videoUrl;
-  final List<Post> posts;
-  final List<UserProfile> profiles;
+  final List<UiPost> uiPosts;
   final int index;
 
   const PostCard({
     super.key,
     required this.videoUrl,
-    required this.posts,
-    required this.profiles,
+    required this.uiPosts,
     required this.index,
   });
 
@@ -56,11 +53,7 @@ class _PostCardState extends State<PostCard> {
                       icon: Icon(Icons.arrow_back, color: Colors.white),
                     ),
                   ),
-                  body: PostView(
-                    posts: widget.posts,
-                    profiles: widget.profiles,
-                    index: widget.index,
-                  ),
+                  body: PostView(uiPosts: widget.uiPosts, index: widget.index),
                 ),
           ),
         );

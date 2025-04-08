@@ -25,7 +25,7 @@ class ProfilePosts extends StatelessWidget {
           }
           // loaded
           else if (state is ProfilePostsLoaded) {
-            final posts = state.posts;
+            final uiPosts = state.uiPosts;
             return GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -35,12 +35,11 @@ class ProfilePosts extends StatelessWidget {
                 mainAxisSpacing: 1,
                 crossAxisSpacing: 1,
               ),
-              itemCount: posts.length,
+              itemCount: uiPosts.length,
               itemBuilder: (context, index) {
                 return PostCard(
-                  videoUrl: posts[index].videoUrl,
-                  posts: posts,
-                  profiles: List.generate(posts.length, (_) => profile),
+                  videoUrl: uiPosts[index].post.videoUrl,
+                  uiPosts: uiPosts,
                   index: index,
                 );
               },

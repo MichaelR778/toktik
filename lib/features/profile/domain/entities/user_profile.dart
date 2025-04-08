@@ -12,4 +12,14 @@ class UserProfile {
     required this.followers,
     required this.following,
   });
+
+  UserProfile copyWith(List<String> newFollowers, List<String> newFollowing) {
+    return UserProfile(
+      userId: userId,
+      username: username,
+      profileImageUrl: profileImageUrl,
+      followers: newFollowers,
+      following: newFollowing,
+    );
+  }
 }

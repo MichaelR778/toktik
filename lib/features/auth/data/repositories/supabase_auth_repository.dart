@@ -42,4 +42,14 @@ class SupabaseAuthRepository implements AuthRepository {
 
   @override
   void logout() => _supabase.auth.signOut();
+
+  @override
+  UserEntity getCurrUser() {
+    try {
+      final currUserId = _supabase.auth.currentUser!.id;
+      return UserEntity(id: currUserId);
+    } catch (e) {
+      throw 'Failed to get current user';
+    }
+  }
 }

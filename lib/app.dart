@@ -6,6 +6,7 @@ import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/auth/presentation/pages/auth_page.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/feed/presentation/pages/feed_page.dart';
+import 'package:toktik/features/follow/presentation/cubits/follow_cubit.dart';
 import 'package:toktik/features/like/presentation/cubits/like_cubit.dart';
 import 'package:toktik/features/post/presentation/cubits/post_cubit.dart';
 import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (context) => getIt<PostCubit>()),
         BlocProvider(create: (context) => getIt<FeedCubit>()..init()),
         BlocProvider(create: (context) => getIt<LikeCubit>()),
+        BlocProvider(create: (context) => getIt<FollowCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -110,9 +112,7 @@ class _RootState extends State<Root> {
           selectedIndex: _currIndex,
           onDestinationSelected: (index) {
             if (index == 2) {
-              final userId =
-                  (context.read<AuthCubit>().state as Authenticated).user.id;
-              context.read<PostCubit>().createPost(userId);
+              context.read<PostCubit>().createPost();
             } else {
               setState(() {
                 _currIndex = index;

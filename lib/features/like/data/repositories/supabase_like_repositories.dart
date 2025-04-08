@@ -27,7 +27,7 @@ class SupabaseLikeRepositories implements LikeRepository {
         'user_id': userId,
       });
     } catch (e) {
-      throw 'Failed to like post: $e';
+      throw 'Failed to unlike post: $e';
     }
   }
 

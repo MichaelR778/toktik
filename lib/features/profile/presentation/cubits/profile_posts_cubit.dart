@@ -12,8 +12,8 @@ class ProfilePostsCubit extends Cubit<ProfilePostsState> {
   Future<void> fetchUserPosts(String userId) async {
     try {
       emit(ProfilePostsLoading());
-      final posts = await _fetchUserPostsUsecase(userId);
-      emit(ProfilePostsLoaded(posts: posts));
+      final uiPosts = await _fetchUserPostsUsecase(userId);
+      emit(ProfilePostsLoaded(uiPosts: uiPosts));
     } catch (e) {
       emit(ProfilePostsError(message: e.toString()));
     }

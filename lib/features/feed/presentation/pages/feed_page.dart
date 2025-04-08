@@ -19,11 +19,10 @@ class FeedPage extends StatelessWidget {
           }
           // loaded
           else if (state is FeedLoaded) {
-            final posts = state.posts;
-            final profiles = state.profiles;
+            final uiPosts = state.uiPosts;
             return RefreshIndicator(
               onRefresh: () => context.read<FeedCubit>().init(),
-              child: PostView(posts: posts, profiles: profiles),
+              child: PostView(uiPosts: uiPosts),
             );
           }
           // error

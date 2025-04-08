@@ -10,21 +10,10 @@ class SupabaseFollowRepository implements FollowRepository {
   @override
   Future<void> follow(String currUserId, String targetId) async {
     try {
-      // add follower to target
-      final targetFollowers = await getFollowers(targetId);
-      targetFollowers.add(currUserId);
-      await _supabase
-          .from('users')
-          .update({'followers': targetFollowers})
-          .eq('id', targetId);
-
-      // add following to curruser
-      final following = await getFollowing(currUserId);
-      following.add(targetId);
-      await _supabase
-          .from('users')
-          .update({'following': following})
-          .eq('id', currUserId);
+      await _supabase.from('followers').insert({
+        'user_id': targetId,
+        'follower_id': currUserId,
+      });
     } catch (e) {
       throw 'Failed to follow: $e';
     }
@@ -33,38 +22,23 @@ class SupabaseFollowRepository implements FollowRepository {
   @override
   Future<void> unfollow(String currUserId, String targetId) async {
     try {
-      // remove follower to target
-      final targetFollowers = await getFollowers(targetId);
-      targetFollowers.remove(currUserId);
-      await _supabase
-          .from('users')
-          .update({'followers': targetFollowers})
-          .eq('id', targetId);
-
-      // remove following to curruser
-      final following = await getFollowing(currUserId);
-      following.remove(targetId);
-      await _supabase
-          .from('users')
-          .update({'following': following})
-          .eq('id', currUserId);
+      await _supabase.from('followers').delete().match({
+        'user_id': targetId,
+        'follower_id': currUserId,
+      });
     } catch (e) {
-      throw 'Failed to unfollow: $e';
+      throw 'Failed to follow: $e';
     }
   }
 
   @override
   Future<List<String>> getFollowers(String userId) async {
     try {
-      final res =
-          await _supabase
-              .from('users')
-              .select('followers')
-              .eq('id', userId)
-              .single();
-      return (res['followers'] as List<dynamic>)
-          .map((userId) => userId as String)
-          .toList();
+      final res = await _supabase
+          .from('followers')
+          .select()
+          .eq('user_id', userId);
+      return res.map((data) => data['follower_id'] as String).toList();
     } catch (e) {
       throw 'Failed to get followers: $e';
     }
@@ -73,15 +47,11 @@ class SupabaseFollowRepository implements FollowRepository {
   @override
   Future<List<String>> getFollowing(String userId) async {
     try {
-      final res =
-          await _supabase
-              .from('users')
-              .select('following')
-              .eq('id', userId)
-              .single();
-      return (res['following'] as List<dynamic>)
-          .map((userId) => userId as String)
-          .toList();
+      final res = await _supabase
+          .from('followers')
+          .select()
+          .eq('follower_id', userId);
+      return res.map((data) => data['user_id'] as String).toList();
     } catch (e) {
       throw 'Failed to get following: $e';
     }

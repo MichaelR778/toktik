@@ -4,6 +4,8 @@ import 'package:toktik/core/widgets/my_filled_button.dart';
 import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
+import 'package:toktik/features/follow/presentation/widgets/follow_button.dart';
+import 'package:toktik/features/follow/presentation/widgets/profile_follow_widget.dart';
 import 'package:toktik/features/profile/domain/entities/user_profile.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_state.dart';
@@ -112,23 +114,7 @@ class _ProfileLoadedWidget extends StatelessWidget {
               const SizedBox(height: 10),
 
               // following, followers, likes
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Column(children: [Text('0'), Text('Following')]),
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: Column(children: [Text('0'), Text('Followers')]),
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: Column(children: [Text('0'), Text('Likes')]),
-                  ),
-                ],
-              ),
+              ProfileFollowWidget(profile: profile, selfProfile: selfProfile),
 
               const SizedBox(height: 20),
 
@@ -147,7 +133,7 @@ class _ProfileLoadedWidget extends StatelessWidget {
                       );
                     },
                   )
-                  : MyFilledTextButton(text: 'Follow', onTap: () {}),
+                  : FollowButton(userId: profile.userId),
 
               const SizedBox(height: 20),
             ],
