@@ -5,7 +5,7 @@ import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/follow/presentation/widgets/follow_button.dart';
-import 'package:toktik/features/follow/presentation/widgets/profile_follow_widget.dart';
+import 'package:toktik/features/follow/presentation/widgets/profile_follow_stats.dart';
 import 'package:toktik/features/profile/domain/entities/user_profile.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_state.dart';
@@ -104,7 +104,10 @@ class _ProfileLoadedWidget extends StatelessWidget {
           Column(
             children: [
               // profile picture
-              ProfileImage(imageUrl: profile.profileImageUrl),
+              ProfileImage(
+                imageUrl: profile.profileImageUrl,
+                diameter: ProfileImage.profileImageWidth,
+              ),
 
               const SizedBox(height: 10),
 
@@ -114,7 +117,7 @@ class _ProfileLoadedWidget extends StatelessWidget {
               const SizedBox(height: 10),
 
               // following, followers, likes
-              ProfileFollowWidget(profile: profile, selfProfile: selfProfile),
+              ProfileFollowStats(profile: profile, selfProfile: selfProfile),
 
               const SizedBox(height: 20),
 

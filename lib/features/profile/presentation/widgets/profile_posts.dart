@@ -21,7 +21,7 @@ class ProfilePosts extends StatelessWidget {
         builder: (context, state) {
           // loading
           if (state is ProfilePostsLoading) {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
           // loaded
           else if (state is ProfilePostsLoaded) {

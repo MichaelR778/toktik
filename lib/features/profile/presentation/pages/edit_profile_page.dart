@@ -81,6 +81,7 @@ class __ProfileLoadedWidgetState extends State<_ProfileLoadedWidget> {
               ProfileImage(
                 imageFile: newProfileImage,
                 imageUrl: profile.profileImageUrl,
+                diameter: ProfileImage.profileImageWidth,
               ),
               // select image
               GestureDetector(

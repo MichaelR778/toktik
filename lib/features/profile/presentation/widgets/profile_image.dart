@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 class ProfileImage extends StatelessWidget {
   final File? imageFile;
   final String imageUrl;
-  final double radius;
+  final double diameter;
   static const double profileImageWidth = 90;
 
   const ProfileImage({
     super.key,
     this.imageFile,
     required this.imageUrl,
-    this.radius = profileImageWidth,
+    required this.diameter,
   });
 
-  Widget _placeHolder(context) {
+  Widget _placeHolder(context, {double? size}) {
     return Container(
-      width: radius,
-      height: radius,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
         shape: BoxShape.circle,
@@ -26,35 +26,40 @@ class ProfileImage extends StatelessWidget {
     );
   }
 
+  Widget _buildImage(BuildContext context) {
+    return imageFile != null
+        ? Image.file(
+          imageFile!,
+          fit: BoxFit.cover,
+          errorBuilder:
+              (context, error, stackTrace) =>
+                  _placeHolder(context, size: diameter),
+        )
+        : Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+            return _placeHolder(context, size: diameter);
+          },
+          errorBuilder:
+              (context, error, stackTrace) =>
+                  _placeHolder(context, size: diameter),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (imageUrl.isEmpty && imageFile == null) return _placeHolder(context);
+    if (imageUrl.isEmpty && imageFile == null) {
+      return _placeHolder(context, size: diameter);
+    }
 
-    return ClipOval(
-      child:
-          imageFile != null
-              ? Image.file(
-                imageFile!,
-                width: radius,
-                height: radius,
-                fit: BoxFit.cover,
-                errorBuilder:
-                    (context, error, stackTrace) => _placeHolder(context),
-              )
-              : Image.network(
-                imageUrl,
-                width: radius,
-                height: radius,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return _placeHolder(context);
-                },
-                errorBuilder:
-                    (context, error, stackTrace) => _placeHolder(context),
-              ),
+    return SizedBox(
+      width: diameter,
+      height: diameter,
+      child: ClipOval(child: _buildImage(context)),
     );
   }
 }

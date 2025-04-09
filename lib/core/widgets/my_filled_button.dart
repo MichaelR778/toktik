@@ -14,10 +14,10 @@ class MyFilledTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
+      child: IntrinsicHeight(
+        child: IntrinsicWidth(
+          child: Container(
+            constraints: BoxConstraints(minHeight: 0, minWidth: 0),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
@@ -33,7 +33,7 @@ class MyFilledTextButton extends StatelessWidget {
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

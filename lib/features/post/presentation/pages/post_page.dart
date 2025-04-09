@@ -60,7 +60,7 @@ class PostPage extends StatelessWidget {
                       onTap: () => navigateToProfile(context),
                       child: ProfileImage(
                         imageUrl: profile.profileImageUrl,
-                        radius: 50,
+                        diameter: 50,
                       ),
                     ),
                     const SizedBox(height: 5),
