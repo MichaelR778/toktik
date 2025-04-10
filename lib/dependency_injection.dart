@@ -8,6 +8,15 @@ import 'package:toktik/features/auth/domain/usecases/login.dart';
 import 'package:toktik/features/auth/domain/usecases/logout.dart';
 import 'package:toktik/features/auth/domain/usecases/register.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:toktik/features/chat/data/repositories/supabase_chat_repository.dart';
+import 'package:toktik/features/chat/domain/repositories/chat_repository.dart';
+import 'package:toktik/features/chat/domain/usecases/create_chat.dart';
+import 'package:toktik/features/chat/domain/usecases/get_message_stream.dart';
+import 'package:toktik/features/chat/domain/usecases/get_user_chat_stream.dart';
+import 'package:toktik/features/chat/domain/usecases/send_message.dart';
+import 'package:toktik/features/chat/presentation/cubits/chat_cubit.dart';
+import 'package:toktik/features/chat/presentation/cubits/chat_service_cubit.dart';
+import 'package:toktik/features/chat/presentation/cubits/message_cubit.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/follow/data/repositories/supabase_follow_repository.dart';
 import 'package:toktik/features/follow/domain/repositories/follow_repository.dart';
@@ -71,6 +80,14 @@ void initDependencies() {
       getCurrentUserUsecase: getIt(),
     ),
   );
+  getIt.registerLazySingleton(
+    () => ChatServiceCubit(
+      createChatUsecase: getIt(),
+      sendMessageUsecase: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton(() => ChatCubit(getuserChatStream: getIt()));
+  getIt.registerFactory(() => MessageCubit(getMessageStream: getIt()));
 
   // usecase
   getIt.registerLazySingleton(
@@ -107,6 +124,10 @@ void initDependencies() {
   getIt.registerLazySingleton(() => IsLiked(likeRepository: getIt()));
   getIt.registerLazySingleton(() => Follow(followRepository: getIt()));
   getIt.registerLazySingleton(() => Unfollow(followRepository: getIt()));
+  getIt.registerLazySingleton(() => CreateChat(chatRepository: getIt()));
+  getIt.registerLazySingleton(() => SendMessage(chatRepository: getIt()));
+  getIt.registerLazySingleton(() => GetUserChatStream(chatRepository: getIt()));
+  getIt.registerLazySingleton(() => GetMessageStream(chatRepository: getIt()));
 
   // repository
   getIt.registerLazySingleton<AuthRepository>(
@@ -126,6 +147,9 @@ void initDependencies() {
   );
   getIt.registerLazySingleton<FollowRepository>(
     () => SupabaseFollowRepository(supabase: getIt()),
+  );
+  getIt.registerLazySingleton<ChatRepository>(
+    () => SupabaseChatRepository(supabase: getIt()),
   );
 
   // external package etc

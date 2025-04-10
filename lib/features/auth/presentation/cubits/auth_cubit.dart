@@ -26,7 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
        _logoutUsecase = logoutUsecase,
        super(Unauthenticated());
 
-  void checkAuthState() {
+  void init() {
     _authStateSubscription?.cancel();
     _authStateSubscription = _getAuthStateChanges().listen((user) {
       if (user != null) {
