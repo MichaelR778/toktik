@@ -4,6 +4,7 @@ import 'package:toktik/features/chat/data/models/message_model.dart';
 import 'package:toktik/features/chat/domain/entities/chat.dart';
 import 'package:toktik/features/chat/domain/entities/message.dart';
 import 'package:toktik/features/chat/domain/repositories/chat_repository.dart';
+import 'package:toktik/features/profile/data/models/user_profile_model.dart';
 
 class SupabaseChatRepository implements ChatRepository {
   final SupabaseClient _supabase;
@@ -12,13 +13,12 @@ class SupabaseChatRepository implements ChatRepository {
     : _supabase = supabase;
 
   @override
-  Future<void> createChat(String otherUserId) async {
+  Future<Chat> createChat(String otherUserId) async {
     try {
       final currentUserId = _supabase.auth.currentUser!.id;
 
       // create chat
-      final res =
-          await _supabase.from('chats').insert({}).select('id').single();
+      final res = await _supabase.from('chats').insert({}).select().single();
       final chatId = res['id'] as String;
 
       // add participants
@@ -26,6 +26,13 @@ class SupabaseChatRepository implements ChatRepository {
         {'chat_id': chatId, 'user_id': currentUserId},
         {'chat_id': chatId, 'user_id': otherUserId},
       ]);
+
+      final otherUserJson =
+          await _supabase.from('users').select().eq('id', otherUserId).single();
+      return ChatModel.fromJson({
+        ...res,
+        'other_user': UserProfileModel.fromJson(otherUserJson),
+      });
     } catch (e) {
       throw 'Failed to create chat: $e';
     }
@@ -79,6 +86,7 @@ class SupabaseChatRepository implements ChatRepository {
         .eq('user_id', currentUserId)
         .asStream()
         .asyncMap((data) async {
+          // get user chats
           final chatIds =
               data.map((json) => json['chat_id'] as String).toList();
           final chatJsons = await _supabase
@@ -86,9 +94,31 @@ class SupabaseChatRepository implements ChatRepository {
               .select()
               .inFilter('id', chatIds)
               .order('last_message_at');
-          return chatJsons
-              .map((chatJson) => ChatModel.fromJson(chatJson))
-              .toList();
+
+          // get other user profile for each chat
+          return Future.wait(
+            (chatJsons).map((chatJson) async {
+              final otherUserIdQuery = await _supabase
+                  .from('chat_participants')
+                  .select('user_id')
+                  .eq('chat_id', chatJson['id']);
+              final otherUserId =
+                  otherUserIdQuery.firstWhere(
+                        (data) => data['user_id'] != currentUserId,
+                      )['user_id']
+                      as String;
+              final otherUserJson =
+                  await _supabase
+                      .from('users')
+                      .select()
+                      .eq('id', otherUserId)
+                      .single();
+              return ChatModel.fromJson({
+                ...chatJson,
+                'other_user': UserProfileModel.fromJson(otherUserJson),
+              });
+            }),
+          );
         });
   }
 }

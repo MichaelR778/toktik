@@ -1,3 +1,4 @@
+import 'package:toktik/features/chat/domain/entities/chat.dart';
 import 'package:toktik/features/chat/domain/repositories/chat_repository.dart';
 
 class CreateChat {
@@ -6,7 +7,7 @@ class CreateChat {
   CreateChat({required ChatRepository chatRepository})
     : _chatRepository = chatRepository;
 
-  Future<void> call(String otherUserId) async {
+  Future<Chat> call(String otherUserId) async {
     return await _chatRepository.createChat(otherUserId);
   }
 }

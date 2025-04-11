@@ -4,6 +4,8 @@ import 'package:toktik/core/widgets/my_filled_button.dart';
 import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
+import 'package:toktik/features/chat/presentation/cubits/chat_service_cubit.dart';
+import 'package:toktik/features/chat/presentation/pages/chat_page.dart';
 import 'package:toktik/features/follow/presentation/widgets/follow_button.dart';
 import 'package:toktik/features/follow/presentation/widgets/profile_follow_stats.dart';
 import 'package:toktik/features/profile/domain/entities/user_profile.dart';
@@ -86,7 +88,7 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class _ProfileLoadedWidget extends StatelessWidget {
+class _ProfileLoadedWidget extends StatefulWidget {
   final UserProfile profile;
   final bool selfProfile;
 
@@ -96,33 +98,42 @@ class _ProfileLoadedWidget extends StatelessWidget {
   });
 
   @override
+  State<_ProfileLoadedWidget> createState() => _ProfileLoadedWidgetState();
+}
+
+class _ProfileLoadedWidgetState extends State<_ProfileLoadedWidget> {
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => context.read<ProfileCubit>().loadProfile(profile.userId),
+      onRefresh:
+          () => context.read<ProfileCubit>().loadProfile(widget.profile.userId),
       child: ListView(
         children: [
           Column(
             children: [
               // profile picture
               ProfileImage(
-                imageUrl: profile.profileImageUrl,
+                imageUrl: widget.profile.profileImageUrl,
                 diameter: ProfileImage.profileImageWidth,
               ),
 
               const SizedBox(height: 10),
 
               // username
-              Text(profile.username),
+              Text(widget.profile.username),
 
               const SizedBox(height: 10),
 
               // following, followers, likes
-              ProfileFollowStats(profile: profile, selfProfile: selfProfile),
+              ProfileFollowStats(
+                profile: widget.profile,
+                selfProfile: widget.selfProfile,
+              ),
 
               const SizedBox(height: 20),
 
               // edit profile button
-              selfProfile
+              widget.selfProfile
                   ? MyFilledTextButton(
                     text: 'Edit Profile',
                     onTap: () {
@@ -130,18 +141,44 @@ class _ProfileLoadedWidget extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder:
-                              (context) =>
-                                  EditProfilePage(userId: profile.userId),
+                              (context) => EditProfilePage(
+                                userId: widget.profile.userId,
+                              ),
                         ),
                       );
                     },
                   )
-                  : FollowButton(userId: profile.userId),
+                  : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FollowButton(userId: widget.profile.userId),
+                      const SizedBox(width: 10),
+                      MyFilledTextButton(
+                        text: 'Message',
+                        onTap: () {
+                          context
+                              .read<ChatServiceCubit>()
+                              .createChat(widget.profile.userId)
+                              .then((chat) {
+                                if (chat != null && mounted) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => ChatPage(chat: chat),
+                                    ),
+                                  );
+                                }
+                              });
+                        },
+                      ),
+                    ],
+                  ),
 
               const SizedBox(height: 20),
             ],
           ),
-          ProfilePosts(profile: profile),
+          ProfilePosts(profile: widget.profile),
         ],
       ),
     );

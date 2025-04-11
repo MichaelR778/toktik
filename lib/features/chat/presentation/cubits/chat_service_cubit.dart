@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toktik/features/chat/domain/entities/chat.dart';
 import 'package:toktik/features/chat/domain/usecases/create_chat.dart';
 import 'package:toktik/features/chat/domain/usecases/send_message.dart';
 import 'package:toktik/features/chat/presentation/cubits/chat_service_state.dart';
@@ -14,11 +15,12 @@ class ChatServiceCubit extends Cubit<ChatServiceState> {
        _sendMessageUsecase = sendMessageUsecase,
        super(ChatServiceInitial());
 
-  Future<void> createChat(String otherUserId) async {
+  Future<Chat?> createChat(String otherUserId) async {
     try {
-      await _createChatUsecase(otherUserId);
+      return await _createChatUsecase(otherUserId);
     } catch (e) {
       emit(ChatServiceError(message: e.toString()));
+      return null;
     }
   }
 

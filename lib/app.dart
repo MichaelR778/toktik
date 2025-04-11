@@ -6,6 +6,7 @@ import 'package:toktik/features/auth/presentation/cubits/auth_state.dart';
 import 'package:toktik/features/auth/presentation/pages/auth_page.dart';
 import 'package:toktik/features/chat/presentation/cubits/chat_cubit.dart';
 import 'package:toktik/features/chat/presentation/cubits/chat_service_cubit.dart';
+import 'package:toktik/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/feed/presentation/pages/feed_page.dart';
 import 'package:toktik/features/follow/presentation/cubits/follow_cubit.dart';
@@ -27,7 +28,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (context) => getIt<LikeCubit>()),
         BlocProvider(create: (context) => getIt<FollowCubit>()),
         BlocProvider(create: (context) => getIt<ChatServiceCubit>()),
-        BlocProvider(create: (context) => getIt<ChatCubit>()..init()),
+        BlocProvider(create: (context) => getIt<ChatCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -36,6 +37,7 @@ class App extends StatelessWidget {
           builder: (context, state) {
             // authenticated
             if (state is Authenticated) {
+              context.read<ChatCubit>().init();
               return Root();
             }
 
@@ -97,7 +99,7 @@ class _RootState extends State<Root> {
           FeedPage(),
           Scaffold(),
           Scaffold(),
-          Scaffold(),
+          ChatListPage(),
           ProfilePage(
             userId: (context.read<AuthCubit>().state as Authenticated).user.id,
             home: true,
