@@ -11,6 +11,7 @@ import 'package:toktik/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:toktik/features/chat/data/repositories/supabase_chat_repository.dart';
 import 'package:toktik/features/chat/domain/repositories/chat_repository.dart';
 import 'package:toktik/features/chat/domain/usecases/create_chat.dart';
+import 'package:toktik/features/chat/domain/usecases/get_chat.dart';
 import 'package:toktik/features/chat/domain/usecases/get_message_stream.dart';
 import 'package:toktik/features/chat/domain/usecases/get_user_chat_stream.dart';
 import 'package:toktik/features/chat/domain/usecases/send_message.dart';
@@ -82,6 +83,7 @@ void initDependencies() {
   );
   getIt.registerLazySingleton(
     () => ChatServiceCubit(
+      getChatUsecase: getIt(),
       createChatUsecase: getIt(),
       sendMessageUsecase: getIt(),
     ),
@@ -124,6 +126,7 @@ void initDependencies() {
   getIt.registerLazySingleton(() => IsLiked(likeRepository: getIt()));
   getIt.registerLazySingleton(() => Follow(followRepository: getIt()));
   getIt.registerLazySingleton(() => Unfollow(followRepository: getIt()));
+  getIt.registerLazySingleton(() => GetChat(chatRepository: getIt()));
   getIt.registerLazySingleton(() => CreateChat(chatRepository: getIt()));
   getIt.registerLazySingleton(() => SendMessage(chatRepository: getIt()));
   getIt.registerLazySingleton(() => GetUserChatStream(chatRepository: getIt()));

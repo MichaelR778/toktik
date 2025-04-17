@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toktik/core/widgets/user_tile.dart';
 import 'package:toktik/features/chat/presentation/cubits/chat_cubit.dart';
 import 'package:toktik/features/chat/presentation/cubits/chat_state.dart';
+import 'package:toktik/features/chat/presentation/pages/chat_page.dart';
 
 class ChatListPage extends StatelessWidget {
   const ChatListPage({super.key});
@@ -9,6 +11,7 @@ class ChatListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Chats')),
       body: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
           if (state is ChatLoaded) {
@@ -20,7 +23,10 @@ class ChatListPage extends StatelessWidget {
               itemCount: chats.length,
               itemBuilder: (context, index) {
                 final chat = chats[index];
-                return ListTile(title: Text(chat.otherUserProfile.username));
+                return UserTile(
+                  profile: chat.otherUserProfile,
+                  navigateTo: ChatPage(chat: chat),
+                );
               },
             );
           }

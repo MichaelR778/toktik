@@ -121,13 +121,15 @@ class __ProfileLoadedWidgetState extends State<_ProfileLoadedWidget> {
                   _controller.text,
                   newProfileImage,
                 );
-                if (mounted) {
+                if (context.mounted) {
                   Navigator.pop(context);
                 }
               } catch (e) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(e.toString())));
+                if (context.mounted) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(e.toString())));
+                }
               }
             },
           ),

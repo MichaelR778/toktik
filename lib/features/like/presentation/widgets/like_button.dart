@@ -19,7 +19,10 @@ class _LikeButtonState extends State<LikeButton> {
   @override
   void initState() {
     super.initState();
-    context.read<LikeCubit>().track(widget.post);
+    if (!widget.post.isViewed) {
+      widget.post.markAsViewed();
+      context.read<LikeCubit>().track(widget.post);
+    }
   }
 
   @override

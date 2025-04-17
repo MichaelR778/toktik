@@ -29,6 +29,7 @@ class LikeCubit extends Cubit<LikeState> {
     final currUser = _getCurrentUserUsecase();
     final isLiked = await _isLikedUsecase(currUser.id, post.id);
     likesMap[post.id] = isLiked;
+
     // like count without curr/user's like to make sure
     // like_state display like count work properly
     countsMap[post.id] = post.likes - (isLiked ? 1 : 0);

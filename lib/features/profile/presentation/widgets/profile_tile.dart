@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toktik/core/widgets/user_tile.dart';
 import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/follow/presentation/widgets/follow_button.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:toktik/features/profile/presentation/cubits/profile_state.dart';
 import 'package:toktik/features/profile/presentation/pages/profile_page.dart';
-import 'package:toktik/features/profile/presentation/widgets/profile_image.dart';
 
 class ProfileTile extends StatelessWidget {
   final String userId;
@@ -20,22 +20,10 @@ class ProfileTile extends StatelessWidget {
         builder: (context, state) {
           if (state is ProfileLoaded) {
             final profile = state.userProfile;
-            return ListTile(
-              contentPadding: const EdgeInsets.all(10),
-              leading: ProfileImage(
-                imageUrl: profile.profileImageUrl,
-                diameter: 50,
-              ),
-              title: Text(profile.username),
+            return UserTile(
+              profile: profile,
+              navigateTo: ProfilePage(userId: userId),
               trailing: FollowButton(userId: userId),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(userId: userId),
-                  ),
-                );
-              },
             );
           }
           return const ListTile(
