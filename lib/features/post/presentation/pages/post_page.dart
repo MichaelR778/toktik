@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toktik/features/comment/presentation/widgets/comment_section.dart';
 import 'package:toktik/features/like/presentation/widgets/like_button.dart';
 import 'package:toktik/features/post/domain/entities/post.dart';
 import 'package:toktik/features/post/presentation/widgets/post_button.dart';
@@ -66,7 +67,17 @@ class PostPage extends StatelessWidget {
                     const SizedBox(height: 5),
                     LikeButton(post: post),
                     PostButton(
-                      onTap: () {},
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          showDragHandle: true,
+                          builder: (BuildContext context) {
+                            return CommentSection(postId: post.id);
+                          },
+                        );
+                      },
                       icon: Icons.chat,
                       color: Colors.white,
                       count: 0,

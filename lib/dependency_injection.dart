@@ -18,6 +18,11 @@ import 'package:toktik/features/chat/domain/usecases/send_message.dart';
 import 'package:toktik/features/chat/presentation/cubits/chat_cubit.dart';
 import 'package:toktik/features/chat/presentation/cubits/chat_service_cubit.dart';
 import 'package:toktik/features/chat/presentation/cubits/message_cubit.dart';
+import 'package:toktik/features/comment/data/repositories/supabase_comment_repository.dart';
+import 'package:toktik/features/comment/domain/repositories/comment_repository.dart';
+import 'package:toktik/features/comment/domain/usecases/add_comment.dart';
+import 'package:toktik/features/comment/domain/usecases/fetch_comment.dart';
+import 'package:toktik/features/comment/presentation/cubits/comment_cubit.dart';
 import 'package:toktik/features/feed/presentation/cubits/feed_cubit.dart';
 import 'package:toktik/features/follow/data/repositories/supabase_follow_repository.dart';
 import 'package:toktik/features/follow/domain/repositories/follow_repository.dart';
@@ -90,6 +95,14 @@ void initDependencies() {
   );
   getIt.registerLazySingleton(() => ChatCubit(getuserChatStream: getIt()));
   getIt.registerFactory(() => MessageCubit(getMessageStream: getIt()));
+  getIt.registerFactory(
+    () => CommentCubit(
+      addCommentUsecase: getIt(),
+      fetchCommentUsecase: getIt(),
+      getProfileUsecase: getIt(),
+      getCurrentUserUsecase: getIt(),
+    ),
+  );
 
   // usecase
   getIt.registerLazySingleton(
@@ -131,6 +144,10 @@ void initDependencies() {
   getIt.registerLazySingleton(() => SendMessage(chatRepository: getIt()));
   getIt.registerLazySingleton(() => GetUserChatStream(chatRepository: getIt()));
   getIt.registerLazySingleton(() => GetMessageStream(chatRepository: getIt()));
+  getIt.registerLazySingleton(() => AddComment(commentRepository: getIt()));
+  getIt.registerLazySingleton(
+    () => FetchComment(commentRepository: getIt(), profileRepository: getIt()),
+  );
 
   // repository
   getIt.registerLazySingleton<AuthRepository>(
@@ -153,6 +170,9 @@ void initDependencies() {
   );
   getIt.registerLazySingleton<ChatRepository>(
     () => SupabaseChatRepository(supabase: getIt()),
+  );
+  getIt.registerLazySingleton<CommentRepository>(
+    () => SupabaseCommentRepository(supabase: getIt()),
   );
 
   // external package etc
