@@ -4,6 +4,7 @@ import 'package:toktik/dependency_injection.dart';
 import 'package:toktik/features/comment/domain/entities/ui_comment.dart';
 import 'package:toktik/features/comment/presentation/cubits/comment_cubit.dart';
 import 'package:toktik/features/comment/presentation/cubits/comment_state.dart';
+import 'package:toktik/features/comment/presentation/widgets/comment_tile.dart';
 
 class CommentSection extends StatelessWidget {
   final int postId;
@@ -67,10 +68,7 @@ class __CommentLoadedWidgetState extends State<_CommentLoadedWidget> {
                       itemCount: uiComments.length,
                       itemBuilder: (context, index) {
                         final uiComment = uiComments[index];
-                        return ListTile(
-                          title: Text(uiComment.profile.username),
-                          subtitle: Text(uiComment.comment.content),
-                        );
+                        return CommentTile(uiComment: uiComment);
                       },
                     ),
           ),

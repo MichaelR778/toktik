@@ -4,14 +4,14 @@ class PostButton extends StatelessWidget {
   final VoidCallback onTap;
   final IconData icon;
   final Color color;
-  final int count;
+  final int? count;
 
   const PostButton({
     super.key,
     required this.onTap,
     required this.icon,
     required this.color,
-    required this.count,
+    this.count,
   });
 
   @override
@@ -24,7 +24,8 @@ class PostButton extends StatelessWidget {
             onTap: onTap,
             child: Icon(icon, color: color, size: 30),
           ),
-          Text('$count', style: const TextStyle(color: Colors.white)),
+          if (count != null)
+            Text('$count', style: const TextStyle(color: Colors.white)),
         ],
       ),
     );

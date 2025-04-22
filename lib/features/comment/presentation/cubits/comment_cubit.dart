@@ -55,11 +55,13 @@ class CommentCubit extends Cubit<CommentState> {
         await _addCommentUsecase(postId, content);
       } catch (e) {
         // revert ui update
+        print('FAILED TO ADD COMMENT: $e');
         oldUiComments.remove(newUiComment);
         emit(CommentLoaded(uiComments: oldUiComments));
       }
     } catch (e) {
       // do nothing to not override the loaded comment with error state
+      print('FAILED TO ADD COMMENT: $e');
     }
   }
 }

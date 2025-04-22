@@ -80,7 +80,6 @@ class PostPage extends StatelessWidget {
                       },
                       icon: Icons.chat,
                       color: Colors.white,
-                      count: 0,
                     ),
                     PostButton(
                       onTap: () {},
